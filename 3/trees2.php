@@ -6,10 +6,6 @@ $steps = 3;
 $rowLen = strlen($data[0]);
 $lines = sizeof($data);
 
-/*foreach ($data as &$row) {
-    $row = str_split($row);
-}*/
-
 $multipliers = [];
 
 $slopeIdx = 0;

@@ -10,24 +10,25 @@ sort($data);
 $builtin = max($data) + 3;
 array_unshift($data, 0);
 $data [] = $builtin;
-$dataLen = sizeof($data);
-
 $data = array_combine($data, $data);
+
+define ('DATA', $data);
+unset($data);
 
 $paths = [0 => 0];
 $cool = 0;
-$unset = [];
-foreach ($data as $value) {
+
+foreach (DATA as $value) {
     $newIter = [];
-    foreach ($paths as $key => $sum) {
+    foreach ($paths as $sum) {
         $successAr = [];
-        for ($step = 1; $step <= 3; $step++) {
+        for ($step = 1; $step <= 3; ++$step) {
             $curSum = $sum + $step;
-            if (isset($data[$curSum])) {
+            if (isset(DATA[$curSum])) {
                 if ($curSum == $builtin) {
                     ++$cool;
                 } else {
-                    $successAr [] = $curSum; // $curIdx + $step
+                    $successAr [] = $curSum;
                 }
             }
         }
@@ -35,4 +36,5 @@ foreach ($data as $value) {
     }
     $paths = $newIter;
 }
+
 var_dump($cool);

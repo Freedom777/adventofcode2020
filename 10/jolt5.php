@@ -22,19 +22,34 @@ for ($i = 0; $i < $builtin;$i++) {
 }
 
 $table = array_reverse(array_intersect_key($table, $data), true);
+
 $sum = 0;
-$curMply = 1;
 foreach ($table as $values) {
-    $s = sizeof($values);
-    if ($s > 1) {
-        $curMply *= $s;
-    }elseif($curMply != 1) {
-        $sum += $curMply;
-        $curMply = 1;
+    $m = recurseF($values, $table);
+    if ($m > 1) {
+        $sum += $m;
     }
 }
-var_dump($table);
+
 var_dump($sum);
+die();
+
+function recurseF($values, $data, $m = 1) : int {
+    $s = sizeof($values);
+    if ($s > 1) {
+        $m *= $s;
+        foreach ($values as $value) {
+            $m = recurseF($data[$value], $data, $m);
+        }
+    }
+
+    return $m;
+}
+
+
+
+// var_dump($table);
+var_dump($sum / 2);
 die();
 
 $cnt = recurse(current($table), $table);
@@ -53,4 +68,13 @@ function recurse($values, $data) {
     }
 
     return $cnt;
+}
+
+function factorial($n)
+{
+    if ($n == 0) {
+        return 1;
+    } else {
+        return $n * factorial($n - 1);
+    }
 }

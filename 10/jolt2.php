@@ -10,34 +10,33 @@ sort($data);
 $builtin = max($data) + 3;
 array_unshift($data, 0);
 $data [] = $builtin;
-$dataLen = sizeof($data);
-
 $data = array_combine($data, $data);
 
+$graph = array_fill_keys($data, []);
+$graphSum = array_fill_keys($data, 0);
 
-$paths = ['0' => 0];
-$cool = [];
-foreach ($data as $value) {
-    $tmpAr = $paths;
-    foreach ($tmpAr as $path => $sum) {
-        $successAr = recurse($data, $sum, $path);
-        unset($paths[$path]);
-        $paths = array_merge($paths, $successAr);
-    }
-}
-var_dump(sizeof($cool));
-
-function recurse($data, $curSum = 0, $curPath = '') {
-    global $cool, $builtin;
-    $successAr = [];
-    for ($step = 1; $step <= 3; $step++) {
-        if (isset($data[$curSum+$step])) {
-            $successAr [$curPath . $step] = $curSum + $step;
-            if ($curSum + $step == $builtin) {
-                $cool [] = $curPath . $step;
-            }
+$table = [];
+for ($i = 0; $i < $builtin;$i++) {
+    foreach ($data as $key => $value) {
+        if ($value - 3 <= $i && $value > $i && isset($data[$i])) {
+            $table [$value] [] = $i;
         }
     }
-    return $successAr;
 }
+
+$table = array_reverse(array_intersect_key($table, $data), true);
+
+$curGraphValue = 1;
+foreach ($table as $i => $values) {
+    $curGraphValue = array_sum($graph [$value]);
+    if (empty($curGraphValue)) {
+        $curGraphValue = 1;
+    }
+
+    foreach ($table [$i] as $value) {
+        $graph [$value] [] = $curGraphValue;
+    }
+}
+
+var_dump(array_sum($graph[0]));
 

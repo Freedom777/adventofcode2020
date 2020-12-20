@@ -1,6 +1,7 @@
 <?php
 
 $data = file('input.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+// $data = ['1 + 2 * 3 + 4 * 5 + 6'];
 //          45  *   272   =    216         +           56
 // $data = '5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))'; // 12240
 
@@ -33,36 +34,20 @@ function array_key_last($array) {
 
 function split($match) {
     $result = [];
-    $pluses = explode('+', $match);
     $mults = explode('*', $match);
-    if (sizeof($pluses) > 1) {
-        foreach ($pluses as $plus) {
-            $mult = explode('*', $plus);
-            if (sizeof($mult) > 1) {
-                foreach ($mult as $number) {
-                    $result [] = $number;
-                    $result [] = '*';
-                }
-                unset($result[array_key_last($result)]);
-            } else {
-                $result [] = $mult [0];
-            }
-            $result [] = '+';
+    $pluses = explode('+', $match);
+    if (sizeof($mults) > 1) { // Only * in string
+        foreach ($mults as $mult) {
+            $pluses = explode('+', $mult);
+            $sum = array_sum($pluses);
+            $result [] = $sum;
+            $result [] = '*';
         }
         unset($result[array_key_last($result)]);
-    } elseif (sizeof($mults) > 1) { // Only * in string
-        $mult = explode('*', $match);
-        if (sizeof($mult) > 1) {
-            foreach ($mult as $number) {
-                $result [] = $number;
-                $result [] = '*';
-            }
-            unset($result[array_key_last($result)]);
-        } else {
-            $result [] = $mult [0];
-        }
+    } elseif (sizeof($pluses) > 1) { // No * operators
+        $result [] = array_sum($pluses);
     } else {
-        $result = $match;
+        $result [] = $match;
     }
 
     return $result;

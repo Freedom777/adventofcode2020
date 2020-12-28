@@ -1,6 +1,6 @@
 <?php
 
-$data = file('test.txt', FILE_IGNORE_NEW_LINES);
+$data = file('input.txt', FILE_IGNORE_NEW_LINES);
 
 $players = [];
 $currentPlayerNum = 0;
@@ -20,9 +20,9 @@ while (!empty($players [1]) && !empty($players [2])) {
     $number1 = array_shift($players [1]);
     $number2 = array_shift($players [2]);
     if ($number1 > $number2) {
-        $players [1] += [$number1, $number2];
+        $players [1] = array_merge($players [1], [$number1, $number2]);
     } else {
-        $players [2] += [$number2, $number1];
+        $players [2] = array_merge($players [2], [$number2, $number1]);
     }
 }
 
